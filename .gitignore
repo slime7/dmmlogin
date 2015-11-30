@@ -1,0 +1,14 @@
+*.log
+/nbproject
+.project
+
+ehthumbs.db
+Thumbs.db
+sitemap.xml
+sitemap.xml.gz
+
+/readme.html
+/license.txt
+
+#ga
+ga.php
