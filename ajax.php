@@ -16,8 +16,6 @@ if (isset($post['action'])) {
 
       $getLoginPage = new scurl();
       $loginPage = $getLoginPage->get('https://www.dmm.com/my/-/login/');
-      //$response = $getLoginPage->get('http://dmmlogin.loc/dmm.html');
-      //$response['data'] = json_decode($response['data'], true);
       preg_match('#DMM_TOKEN.*?"(?<DMM_TOKEN>[a-z0-9]{32})".*?"token.*?"(?<token>[a-z0-9]{32})#is', $loginPage['data'], $tokens);
       unset($loginPage['data']);
       $DMM_TOKEN = isset($tokens['DMM_TOKEN']) ? $tokens['DMM_TOKEN'] : '';
@@ -25,9 +23,6 @@ if (isset($post['action'])) {
 
       if ($loginPage['status'] == 200 && !!$DMM_TOKEN && !!$post_token) {
         $first = ['DMM_TOKEN' => $DMM_TOKEN, 'token' => $post_token];
-        //$json->add('DMM_TOKEN', $DMM_TOKEN);
-        //$json->add('token', $post_token);
-        //$json->add('first', $first);
       } else {
         $json->setMsg('get DMM_TOKEN failure');
         break;
@@ -41,7 +36,6 @@ if (isset($post['action'])) {
 
       if ($tokensPage['status'] == 200) {
         $ajax_tokens = json_decode($tokensPage['data'], true);
-        //$json->add('second', $ajax_tokens);
       } else {
         $json->setMsg('get token failure');
         break;
@@ -70,7 +64,6 @@ if (isset($post['action'])) {
             $cookie .=!!$cookie ? '; ' . $c : $c;
           }
         }
-        //$json->add('third', ['cookie' => $cookie]);
       } else {
         $json->setMsg('login failure');
         break;
@@ -82,9 +75,7 @@ if (isset($post['action'])) {
       );
 
       if ($link = gameLink($cookie)) {
-//http://203.104.209.102/kcs/mainD2.swf?api_token=b8bd0c28934d3e7153eb0173b0b491f7d3282990&api_starttime=1448715412234
-//http://osapi.dmm.com/gadgets/ifr?synd=dmm&container=dmm&owner=15571344&viewer=15571344&aid=854854&mid=24603976&country=jp&lang=ja&view=canvas&parent=http://www.dmm.com/netgame/social/&url=http://203.104.209.7/gadget.xml&st=k8ann7D2i5BgQBL3O2aHlWytrbzqZF6ocfw4FYBFKo33PpX78f0v5aoCAqhgHKAtrbp3Lk49cCgo1H00uS39RQx2mB7PnCOaM1d+xx78h41USLQejvUMyyLVgMAv+b3/xTj8Bmktrb/8pSZWrCmF06RAzl8eItMGyYo0ZLjDmSWxxIR7XeNw6G2YwornAyP9Cb225rvEy8cXWOfOvCRztDIVOjs=#rpctoken=1115823693
-//http://osapi.dmm.com/gadgets/ifr?synd=dmm&container=dmm&owner=15571344&viewer=15571344&aid=854854&mid=24603976&country=jp&lang=ja&view=canvas&parent=http%3A%2F%2Fwww.dmm.com%2Fnetgame%2Fsocial%2F&url=http%3A%2F%2F203.104.209.7%2Fgadget.xml&st=k8ann7D2i5BgQBL3O2aHlWytrbzqZF6ocfw4FYBFKo33PpX78f0v5aoCAqhgHKAtrbp3Lk49cCgo1H00uS39RQx2mB7PnCOaM1d%2Bxx78h41USLQejvUMyyLVgMAv%2Bb3%2FxTj8Bmktrb%2F8pSZWrCmF06RAzl8eItMGyYo0ZLjDmSWxxIR7XeNw6G2YwornAyP9Cb225rvEy8cXWOfOvCRztDIVOjs%3D#rpctoken=1115823693
+
         $json->add('link', $link);
         $json->add('link_encode', urlencode($link));
 
