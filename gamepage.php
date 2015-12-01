@@ -43,7 +43,7 @@
   <body>
     <div class="container-fluid" role="main">
       <div class="game_area">
-        <a class="btn btn-lg btn-primary btn-block" href="/?relog=1">Relog</a>
+        <a class="btn btn-sm btn-primary btn-block relog" href="/?relog=1">Relog</a>
         <iframe id="game_frame" name="game_frame" src="<?php echo $iframe_url ?>" width="900" height="1200" scrolling="no" frameborder="0" border="0">艦隊これくしょん -艦これ-</iframe>
       </div>
     </div>
