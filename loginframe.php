@@ -42,6 +42,7 @@
     <link href="http://cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.css" rel="stylesheet" media="none" onload="media = 'all'">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" media="none" onload="media = 'all'">
     <link href="/asset/style/default.css" rel="stylesheet" media="none" onload="media = 'all'">
+    <script>var si_string = {email: '<?= $email ?>'};</script>
   </head>
   <body class="noto bg">
     <div class="container-fluid" role="main">

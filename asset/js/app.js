@@ -8,14 +8,12 @@ angular.module('dmmLogin', ['angular-loading-bar'])
           '$scope', '$http',
           function ($scope, $http) {
             $scope.login_data = {
-              email: '',
-              password: '',
+              email: !!si_string ? si_string.email : '',
+              password: !!si_string ? si_string.password : '',
               remember: false,
               loadType: 'iframe'
             };
-            //$scope.hasCookie = !!$cookies.get('login_string');
-            $scope.hasCookie = true;
-            //$scope.loginContent = '';
+            $scope.hasCookie = !!$scope.login_data.email;
             $scope.error = '';
 
             $scope.login = function (cookie) {

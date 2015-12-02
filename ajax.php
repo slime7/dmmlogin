@@ -5,14 +5,27 @@ include_once ROOT . 'include/functions.php';
 
 $json = new sjsonpack();
 $post = APOST();
+$email = $post['email'];
+$password = $post['password'];
 
 if (isset($post['action'])) {
   switch ($post['action']) {
+    case 'usecookie':
+      $si_string = '';
+      if (isset($_COOKIE['si_string'])) {
+        $si_string = explode("\t", authcode($_COOKIE['si_string']));
+      }
+      if (!!$si_string) {
+        list($email, $password) = $si_string;
+      }
+
     case 'login':
-      if (!preg_match('#\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*#', $post['email'])) {
+      if (!preg_match('#\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*#', $email)) {
         $json->setMsg('invailed email');
         break;
       }
+
+      ssetcookie('si_string', authcode(implode("\t", [$email, $password]), 'ENCODE'));
 
       $getLoginPage = new scurl();
       $loginPage = $getLoginPage->get('https://www.dmm.com/my/-/login/');
@@ -44,12 +57,12 @@ if (isset($post['action'])) {
       $doLogin = new scurl();
       $loginParams = [
           'token' => $ajax_tokens['token'],
-          'login_id' => $post['email'],
+          'login_id' => $email,
           'save_login_id' => 0,
-          'password' => $post['password'],
+          'password' => $password,
           'use_auto_login' => 0,
-          $ajax_tokens['login_id'] => $post['email'],
-          $ajax_tokens['password'] => $post['password'],
+          $ajax_tokens['login_id'] => $email,
+          $ajax_tokens['password'] => $password,
       ];
       $loginResult = $doLogin->post(
               'https://www.dmm.com/my/-/login/auth/', $loginParams
@@ -78,9 +91,8 @@ if (isset($post['action'])) {
 
         $json->add('link', $link);
         $json->add('link_encode', urlencode($link));
+        ssetcookie('iframe_url', $link, 60);
 
-
-        ssetcookie('iframe_url', $link);
         if (!!$post['remember']) {
           ssetcookie('login_string', base64_encode($cookie));
         } else {
@@ -92,22 +104,6 @@ if (isset($post['action'])) {
       }
 
       $json->success();
-      break;
-
-    case 'usecookie':
-      $login_string = isset($_COOKIE['login_string']) ? $_COOKIE['login_string'] : '';
-      $cookie = base64_decode($login_string);
-      if (!$cookie) {
-        $json->srtMsg('invailed cookie');
-        break;
-      }
-
-      if ($link = gameLink($cookie)) {
-        $json->add('link', $link);
-        $json->add('link_encode', urlencode($link));
-        $json->success();
-        ssetcookie('iframe_url', $link);
-      }
       break;
 
     default :

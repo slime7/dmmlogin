@@ -14,6 +14,13 @@ if (isset($_GET['relog'])) {
 if (!!$iframe_url) {
   include('gamepage.php');
 } else {
+  $email = $password = $si_string = '';
+  if (isset($_COOKIE['si_string'])) {
+    $si_string = explode("\t", authcode($_COOKIE['si_string']));
+  }
+  if (!!$si_string) {
+    list($email, $password) = $si_string;
+  }
   include('loginframe.php');
 }
  
