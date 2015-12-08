@@ -56,18 +56,18 @@
             <input type="checkbox" value="remember-me" ng-model="login_data.remember"> Remember me
           </label>
         </div>
-        <!--div class="radio">
+        <div class="radio">
           <label>
             <input type="radio" name="loadType" value="iframe" ng-model="login_data.loadType">
-            return iframe url
+            include iframe
           </label>
         </div>
         <div class="radio">
           <label>
             <input type="radio" name="loadType" value="redirect" ng-model="login_data.loadType">
-            redirect
+            redirect to iframe
           </label>
-        </div-->
+        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
         <button class="btn btn-lg btn-success btn-block" type="submit" ng-show="hasCookie" ng-click="login(true)">Use cookie</button>
       </div>
