@@ -37,8 +37,8 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" media="none" onload="media = 'all'">
-    <link href="/asset/style/default.css" rel="stylesheet" media="none" onload="media = 'all'">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/asset/style/default.css" rel="stylesheet">
   </head>
   <body>
     <div class="container-fluid" role="main">
