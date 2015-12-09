@@ -39,9 +39,9 @@
 
     <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
     <script src="http://cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.js"></script>
-    <link href="http://cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.css" rel="stylesheet" media="none" onload="media = 'all'">
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" media="none" onload="media = 'all'">
-    <link href="/asset/style/default.css" rel="stylesheet" media="none" onload="media = 'all'">
+    <link href="http://cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.css">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/asset/style/default.css" rel="stylesheet">
     <script>var si_string = {email: '<?= $email ?>'};</script>
   </head>
   <body class="noto bg">
