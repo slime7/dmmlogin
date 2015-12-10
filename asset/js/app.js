@@ -16,11 +16,7 @@ angular.module('dmmLogin', ['angular-loading-bar'])
       $scope.hasCookie = !!$scope.login_data.email;
       $scope.error = '';
       $scope.iframeLink = $sce.trustAsResourceUrl('');
-      $scope.pageContent = 'login-frame.html';
-
-      $scope.changePage = function (page) {
-        $scope.pageContent = page;
-      };
+      $scope.gameloaded = false;
 
       $scope.login = function (cookie) {
         $scope.login_data.action = !!cookie ? 'usecookie' : 'login';
@@ -32,7 +28,6 @@ angular.module('dmmLogin', ['angular-loading-bar'])
 
         $http(req).then(
           function (response) {
-            //$scope.loginContent = response;
             if ( response.status !== 200 ) {
               $scope.error = 'network error';
             } else {
@@ -42,7 +37,7 @@ angular.module('dmmLogin', ['angular-loading-bar'])
               } else {
                 if ( $scope.login_data.loadType == 'iframe' ) {
                   $scope.iframeLink = $sce.trustAsResourceUrl(json.data.link);
-                  $scope.changePage('game-frame.html');
+                  $scope.gameloaded = true;
                 } else if ( $scope.login_data.loadType == 'redirect' ) {
                   location.href = json.data.link;
                 }
