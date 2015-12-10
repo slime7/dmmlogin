@@ -1,0 +1,3 @@
+[submodule "asset/js/lib/hashdown"]
+	path = asset/js/lib/hashdown
+	url = https://github.com/rinick/hashdown.git
