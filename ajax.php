@@ -91,7 +91,6 @@ if (isset($post['action'])) {
 
         $json->add('link', $link);
         $json->add('link_encode', urlencode($link));
-        ssetcookie('iframe_url', $link, 60);
 
         if (!!$post['remember']) {
           ssetcookie('login_string', base64_encode($cookie));

@@ -1,16 +1,1 @@
 RewriteEngine on
-
-RewriteRule .*\.(?:exe|rar|zip|7z|000|001|002|003|004|htaccess|sql) [F]
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} /pinpai.*
-RewriteRule . /pinpai/index.php [L]
-
-RewriteCond %{REQUEST_FILENAME} /view.*\.html
-RewriteRule . /view/index.php [L]
-
-RewriteRule ^(.*)/([\w\-]+)\?(.*)$ $1/$2.php\?$3 [L]
-RewriteRule ^(.*)/([\w\-]+)$ $1/$2.php [L]
-RewriteRule ^(.*)/base64img/(.*)/(.*)_(\d+).jpg$ $1/base64img.php\?class=$2&$3=$4 [L]
-RewriteRule ^(.*)/base64img/(.*)/(.*)_(\d+)_(.*).jpg$ $1/base64img.php\?class=$2&po=$5&$3=$4 [L]

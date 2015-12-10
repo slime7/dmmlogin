@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='dmmLogin' ng-controller="mainCtrl">
   <head>
     <title>DMM Login</title>
 
@@ -37,15 +37,50 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.js"></script>
+    <link href="http://cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.css">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    
     <link href="/asset/style/default.css" rel="stylesheet">
+    <script>var si_string = {email: '<?= $email ?>'};</script>
   </head>
-  <body>
+  <body class="noto bg">
     <div class="container-fluid" role="main">
-      <div class="game_area">
-        <a class="btn btn-sm btn-primary btn-block relog" href="/?relog=1">Relog</a>
-        <iframe id="game_frame" name="game_frame" src="<?php echo $iframe_url ?>" width="900" height="1200" scrolling="no" frameborder="0" border="0">艦隊これくしょん -艦これ-</iframe>
-      </div>
+      <div ng-include="pageContent"></div>
     </div>
+    <script src="/asset/js/app.js"></script>
+    <script type="text/ng-template" id="login-frame.html">
+      <div class="login-form">
+        <h2>DMM Login</h2>
+        <div class="alert alert-danger" role="alert" ng-show="error"><span ng-bind="error"></span></div>
+        <input type="email" class="form-control" placeholder="DMM ID" ng-model="login_data.email" autofocus>
+        <input type="password" class="form-control" placeholder="Password" ng-model="login_data.password">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me" ng-model="login_data.remember"> Remember me
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="loadType" value="iframe" ng-model="login_data.loadType">
+            include iframe
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="loadType" value="redirect" ng-model="login_data.loadType">
+            redirect to iframe
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit" ng-show="hasCookie" ng-click="login(true)">Use cookie</button>
+      </div>
+    </script>
+    <script type="text/ng-template" id="game-frame.html">
+      <div class="game_area">
+        <iframe id="game_frame" name="game_frame" ng-src="{{iframeLink}}" width="800" height="1200" scrolling="no" frameborder="0" border="0">艦隊これくしょん -艦これ-</iframe>
+      </div>
+    </script>
   </body>
 </html>

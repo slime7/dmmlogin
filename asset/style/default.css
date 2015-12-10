@@ -19,21 +19,9 @@ body.bg{
 }
 .game_area{
   position: relative;
-  width: 900px;
+  width: 800px;
   padding: 15px;
   margin: 0 auto;
-}
-.game_area .relog{
-  position: absolute;
-  right: 35px;
-  top: 420px;
-  width: 20px;
-  transition: width .3s ease;
-  -moz-transition: width .3s ease;
-  -webkit-transition: width .3s ease;
-}
-.game_area .relog:hover {
-  width: 90px;
 }
 .login-form .form-control {
   position: relative;

@@ -5,8 +5,8 @@ angular.module('dmmLogin', ['angular-loading-bar'])
     }])
 
   .controller('mainCtrl', [
-    '$scope', '$http',
-    function ($scope, $http) {
+    '$scope', '$http', '$sce',
+    function ($scope, $http, $sce) {
       $scope.login_data = {
         email: !!si_string ? si_string.email : '',
         password: !!si_string ? si_string.password : '',
@@ -15,6 +15,12 @@ angular.module('dmmLogin', ['angular-loading-bar'])
       };
       $scope.hasCookie = !!$scope.login_data.email;
       $scope.error = '';
+      $scope.iframeLink = $sce.trustAsResourceUrl('');
+      $scope.pageContent = 'login-frame.html';
+
+      $scope.changePage = function (page) {
+        $scope.pageContent = page;
+      };
 
       $scope.login = function (cookie) {
         $scope.login_data.action = !!cookie ? 'usecookie' : 'login';
@@ -35,7 +41,8 @@ angular.module('dmmLogin', ['angular-loading-bar'])
                 $scope.error = json.msg;
               } else {
                 if ( $scope.login_data.loadType == 'iframe' ) {
-                  location.href = '/';
+                  $scope.iframeLink = $sce.trustAsResourceUrl(json.data.link);
+                  $scope.changePage('game-frame.html');
                 } else if ( $scope.login_data.loadType == 'redirect' ) {
                   location.href = json.data.link;
                 }
