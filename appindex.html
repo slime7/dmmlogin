@@ -47,7 +47,10 @@
   </head>
   <body class="noto bg">
     <div class="container-fluid" role="main">
-      <div class="login-form" ng-hide="gameloaded">
+      <div class="game_area" ng-show="gameloaded">
+        <iframe id="game_frame" name="game_frame" ng-src="{{iframeLink}}" width="800" height="1200" scrolling="no" frameborder="0" border="0">艦隊これくしょん -艦これ-</iframe>
+      </div>
+      <div class="login-form" ng-if="!gameloaded">
         <h2>DMM Login</h2>
         <div class="alert alert-danger" role="alert" ng-show="error"><span ng-bind="error"></span></div>
         <input type="email" class="form-control" placeholder="DMM ID" ng-model="login_data.email" autofocus>
@@ -71,9 +74,6 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
         <button class="btn btn-lg btn-success btn-block" type="submit" ng-show="hasCookie" ng-click="login(true)">Use cookie</button>
-      </div>
-      <div class="game_area" ng-hide="!gameloaded">
-        <iframe id="game_frame" name="game_frame" ng-src="{{iframeLink}}" width="800" height="1200" scrolling="no" frameborder="0" border="0">艦隊これくしょん -艦これ-</iframe>
       </div>
     </div>
     <script src="/asset/js/app.js"></script>
