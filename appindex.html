@@ -72,8 +72,8 @@
             redirect to iframe
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login()">Sign in</button>
-        <button class="btn btn-lg btn-success btn-block" type="submit" ng-show="hasCookie" ng-click="login(true)">Use cookie</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="logining" ng-click="login()">Sign in</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit" ng-disabled="logining" ng-show="hasCookie" ng-click="login(true)">Use cookie</button>
       </div>
     </div>
     <script src="/asset/js/app.js"></script>

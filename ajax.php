@@ -7,6 +7,7 @@ $json = new sjsonpack();
 $post = APOST();
 $email = $post['email'];
 $password = $post['password'];
+$remember = isset($post['remember']) ? $post['remember'] : false;
 
 if (isset($post['action'])) {
   switch ($post['action']) {
@@ -25,7 +26,9 @@ if (isset($post['action'])) {
         break;
       }
 
-      ssetcookie('si_string', authcode(implode("\t", [$email, $password]), 'ENCODE'));
+      if ($remember) {
+        ssetcookie('si_string', authcode(implode("\t", [$email, $password]), 'ENCODE'));
+      }
 
       $getLoginPage = new scurl();
       $loginPage = $getLoginPage->get('https://www.dmm.com/my/-/login/');
