@@ -130,7 +130,7 @@ function gameLink($cookie) {
     $link = $html->find('iframe#game_frame', 0)->src;
     $html->clear();
 
-    return $link;
+    return htmlspecialchars_decode($link);
   }
 
   return false;
