@@ -1,6 +1,7 @@
 *.log
 /nbproject
 .project
+.idea
 
 ehthumbs.db
 Thumbs.db

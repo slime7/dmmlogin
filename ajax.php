@@ -47,7 +47,7 @@ if (isset($post['action'])) {
       $getLoginTokens = new scurl();
       $ajaxHeaders = ['DMM_TOKEN: ' . $DMM_TOKEN, 'X-Requested-With: XMLHttpRequest'];
       $tokensPage = $getLoginTokens->post(
-              'https://www.dmm.com/my/-/login/ajax-get-token/', ['token' => $post_token], ['headers' => $ajaxHeaders]
+        'https://www.dmm.com/my/-/login/ajax-get-token/', ['token' => $post_token], ['headers' => $ajaxHeaders]
       );
 
       if ($tokensPage['status'] == 200) {
@@ -59,16 +59,16 @@ if (isset($post['action'])) {
 
       $doLogin = new scurl();
       $loginParams = [
-          'token' => $ajax_tokens['token'],
-          'login_id' => $email,
-          'save_login_id' => 0,
-          'password' => $password,
-          'use_auto_login' => 0,
-          $ajax_tokens['login_id'] => $email,
-          $ajax_tokens['password'] => $password,
+        'token' => $ajax_tokens['token'],
+        'login_id' => $email,
+        'save_login_id' => 0,
+        'password' => $password,
+        'use_auto_login' => 0,
+        $ajax_tokens['login_id'] => $email,
+        $ajax_tokens['password'] => $password,
       ];
       $loginResult = $doLogin->post(
-              'https://www.dmm.com/my/-/login/auth/', $loginParams
+        'https://www.dmm.com/my/-/login/auth/', $loginParams
       );
 
       if ($loginResult['status'] == 302) {
@@ -77,7 +77,7 @@ if (isset($post['action'])) {
           $line = explode(":", $h, 2);
           if ($line[0] == 'Set-Cookie') {
             $c = explode(";", $line[1])[0];
-            $cookie .=!!$cookie ? '; ' . $c : $c;
+            $cookie .= !!$cookie ? '; ' . $c : $c;
           }
         }
       } else {
@@ -87,7 +87,7 @@ if (isset($post['action'])) {
 
       $getGamePage = new scurl();
       $gamePage = $getGamePage->get(
-              'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/', [], ['cookie' => $cookie]
+        'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/', [], ['cookie' => $cookie]
       );
 
       if ($link = gameLink($cookie)) {
@@ -121,7 +121,7 @@ exit($json);
 function gameLink($cookie) {
   $getGamePage = new scurl();
   $gamePage = $getGamePage->get(
-          'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/', [], ['cookie' => $cookie]
+    'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/', [], ['cookie' => $cookie]
   );
 
   if ($gamePage['status'] == 200) {
