@@ -2,27 +2,25 @@ html {
   position: relative;
   min-height: 100%;
 }
-html, body {
-  overflow-x: hidden; /* Prevent scroll on narrow devices */
+
+body.noto {
+  font-family: "Noto Sans", "Noto Sans CJK SC", "Microsoft YaHei", "微软雅黑", tahoma, arial, sans-serif;
 }
-body.noto{
-  font-family: "Noto Sans", "Noto Sans CJK SC", "Microsoft YaHei","微软雅黑",tahoma,arial,sans-serif;
-}
-body.bg{
+
+body.bg {
   background-color: #fafafa;
 }
 
-.login-form{
+.login-form {
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
-.game_area{
-  position: relative;
-  width: 900px;
-  padding: 15px;
-  margin: 0 auto;
+
+.relogin {
+  margin-top: 15px;
 }
+
 .login-form .form-control {
   position: relative;
   height: auto;
@@ -32,14 +30,17 @@ body.bg{
   padding: 10px;
   font-size: 16px;
 }
+
 .login-form .form-control:focus {
   z-index: 2;
 }
+
 .login-form input[type="email"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
 .login-form input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;

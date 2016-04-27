@@ -39,19 +39,20 @@
 
   <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
   <script src="//cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.js"></script>
-  <link href="//cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.css">
+  <link href="//cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.css" rel="stylesheet">
   <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 
   <link href="/asset/style/default.css" rel="stylesheet">
-  <script>var si_string = {email: '<?= $email ?>'};</script>
 </head>
 <body class="noto bg">
+<input type="hidden" id="init-data" value="<?= $init_data ?>">
 <div class="container-fluid" role="main">
-  <div class="game_area" ng-show="gameloaded">
-    <iframe id="gameframe-hack" name="game_frame" ng-src="{{iframeLink}}"
-            width="900" height="496" scrolling="no"
-            frameborder="0" border="0">艦隊これくしょん -艦これ-
-    </iframe>
+  <div id="flashWrap" ng-hide="!gameloaded">
+    <embed id="externalswf" width="800" height="480"
+           wmode="opaque" quality="high" bgcolor="#000000"
+           allowscriptaccess="always" type="application/x-shockwave-flash" base="{{flashBase}}"
+           class="center-block" ng-src="{{flashLink}}"></embed>
+    <button class="relogin btn btn-primary center-block" ng-click="relogin()">re-login</button>
   </div>
   <div class="login-form" ng-if="!gameloaded">
     <h2>DMM Login</h2>
@@ -67,14 +68,20 @@
     </div>
     <div class="radio">
       <label>
-        <input type="radio" name="loadType" value="iframe" ng-model="login_data.loadType">
-        include iframe
+        <input type="radio" name="loadType" value="swf" ng-model="login_data.loadType">
+        include swf
       </label>
     </div>
     <div class="radio">
       <label>
         <input type="radio" name="loadType" value="redirect" ng-model="login_data.loadType">
-        redirect to iframe
+        redirect to swf
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="loadType" value="redirect2" ng-model="login_data.loadType">
+        redirect to osapi
       </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block"
