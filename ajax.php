@@ -23,7 +23,7 @@ $urls = [
   'make_request' => 'http://osapi.dmm.com/gadgets/makeRequest',
   'get_world' => 'http://203.104.209.7/kcsapi/api_world/get_id/%s/1/%d',
   'get_flash' => 'http://%s/kcsapi/api_auth_member/dmmlogin/%s/1/%d',
-  'flash' => '//%s/kcs/mainD2.swf?api_token=%s&api_starttime=%d'
+  'flash' => 'http://%s/kcs/mainD2.swf?api_token=%s&api_starttime=%d'
 ];
 $world_ip_list = [
   '203.104.209.71',
@@ -217,7 +217,7 @@ if (isset($post['action'])) {
         break;
       }
       $falsh = sprintf($urls['flash'], $world_ip, $api_token, $api_starttime);
-      $json->add('flash_base', '//' . $world_ip . '/kcs/');
+      $json->add('flash_base', 'http://' . $world_ip . '/kcs/');
       $json->add('flash', $falsh);
       $json->add('flash_encode', urlencode($falsh));
 
