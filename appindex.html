@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app='dmmLogin' ng-controller="mainCtrl">
+<html ng-app="dmmLogin" ng-controller="mainCtrl">
 <head>
   <title>DMM Login</title>
 
@@ -47,11 +47,11 @@
 <body class="noto bg">
 <input type="hidden" id="init-data" value="<?= $init_data ?>">
 <div class="container-fluid" role="main">
-  <div id="flashWrap" ng-hide="!gameloaded">
+  <div id="flashWrap" ng-if="gameloaded">
     <embed id="externalswf" width="800" height="480"
            wmode="opaque" quality="high" bgcolor="#000000"
            allowscriptaccess="always" type="application/x-shockwave-flash" base="{{flashBase}}"
-           class="center-block" ng-src="{{flashLink}}"></embed>
+           class="center-block" embed-src="{{flashLink}}" src="{{flashLink}}"></embed>
     <button class="relogin btn btn-primary center-block" ng-click="relogin()">re-login</button>
   </div>
   <div class="login-form" ng-if="!gameloaded">
