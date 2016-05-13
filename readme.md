@@ -10,6 +10,14 @@ dmmlogin是一个网页游戏《艦隊これくしょん -艦これ-》的免代
 
 为了您的账号安全请使用SSL连接到服务器并且不要随意使用自己的账号登录到他人的服务器。
 
-登录流程来自[[https://github.com/phoenixlzx/kancolle-broker]]
+登录流程来自[kancolle-broker](https://github.com/phoenixlzx/kancolle-broker)
 
-swf获取流程来自[[https://github.com/acgx/ooi3]]
+swf获取流程来自[ooi3](https://github.com/acgx/ooi3)
+
+###使用代理
+
+复制根目录的```proxy.sample.php```并重命名为```poxy.php```，修改文件内定义的ip和端口即可。
+
+###预览图
+
+![preview](https://raw.githubusercontent.com/slime7/dmmlogin/master/asset/img/preview.png)
