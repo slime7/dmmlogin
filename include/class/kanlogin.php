@@ -35,7 +35,7 @@ class kanlogin
   /**
    * urls used
    */
-  const urls = [
+  private $urls = [
     'login' => 'https://www.dmm.com/my/-/login/',
     'gettoken' => 'https://www.dmm.com/my/-/login/ajax-get-token/',
     'auth' => 'https://www.dmm.com/my/-/login/auth/',
@@ -48,7 +48,7 @@ class kanlogin
   /**
    * kan_colle world server ip
    */
-  const world_ip_list = [
+  private $world_ip_list = [
     '203.104.209.71',
     '203.104.209.87',
     '125.6.184.16',
@@ -98,7 +98,7 @@ class kanlogin
     if (proxy) {
       $getLoginPage->setProxy(proxy_addr, proxy_port);
     }
-    $loginPage = $getLoginPage->get(self::urls['login']);
+    $loginPage = $getLoginPage->get($this->urls['login']);
     preg_match('#DMM_TOKEN.*?"(?<DMM_TOKEN>[a-z0-9]{32})".*?"token.*?"(?<token>[a-z0-9]{32})#is', $loginPage['data'], $tokens);
     unset($loginPage['data']);
     $DMM_TOKEN = isset($tokens['DMM_TOKEN']) ? $tokens['DMM_TOKEN'] : '';
@@ -129,7 +129,7 @@ class kanlogin
     }
     $ajaxHeaders = ['DMM_TOKEN: ' . $this->loginData['DMM_TOKEN'], 'X-Requested-With: XMLHttpRequest'];
     $tokensPage = $getLoginTokens->post(
-      self::urls['gettoken'], ['token' => $this->loginData['post_token']], ['headers' => $ajaxHeaders]
+      $this->urls['gettoken'], ['token' => $this->loginData['post_token']], ['headers' => $ajaxHeaders]
     );
 
     if ($tokensPage['status'] == 200) {
@@ -164,7 +164,7 @@ class kanlogin
       $this->loginData['ajax_tokens']['password'] => $this->password,
     ];
     $loginResult = $doLogin->post(
-      self::urls['auth'], $loginParams
+      $this->urls['auth'], $loginParams
     );
 
     if ($loginResult['status'] == 302) {
@@ -197,7 +197,7 @@ class kanlogin
       $getGamePage->setProxy(proxy_addr, proxy_port);
     }
     $gamePage = $getGamePage->get(
-      self::urls['game'], [], ['cookie' => $this->loginData['dmm_cookie']]
+      $this->urls['game'], [], ['cookie' => $this->loginData['dmm_cookie']]
     );
 
     if ($gamePage['status'] == 200) {
@@ -238,7 +238,7 @@ class kanlogin
       $getWorld->setProxy(proxy_addr, proxy_port);
     }
     parse_str(parse_url($this->loginData['osapi'], PHP_URL_QUERY), $this->loginData['osapi_query']);
-    $getWorldUrl = sprintf(self::urls['get_world'], $this->loginData['osapi_query']['owner'], time() * 1000);
+    $getWorldUrl = sprintf($this->urls['get_world'], $this->loginData['osapi_query']['owner'], time() * 1000);
     $getWorldHeader = ['Referer: ' . $this->loginData['osapi']];
     $world = $getWorld->get(
       $getWorldUrl, [], ['headers' => $getWorldHeader]
@@ -248,7 +248,7 @@ class kanlogin
       $world_svdata = json_decode(substr($world['data'], 7), true);
       if ($world_svdata['api_result'] == 1) {
         $this->loginData['world_id'] = $world_svdata['api_data']['api_world_id'];
-        $this->loginData['world_ip'] = self::world_ip_list[$this->loginData['world_id'] - 1];
+        $this->loginData['world_ip'] = $this->world_ip_list[$this->loginData['world_id'] - 1];
 
         return true;
       } else {
@@ -274,7 +274,7 @@ class kanlogin
     if (proxy) {
       $getApiToken->setProxy(proxy_addr, proxy_port);
     }
-    $getFlashUrl = sprintf(self::urls['get_flash'], $this->loginData['world_ip'], $this->loginData['osapi_query']['owner'], time() * 1000);
+    $getFlashUrl = sprintf($this->urls['get_flash'], $this->loginData['world_ip'], $this->loginData['osapi_query']['owner'], time() * 1000);
     $getFlashData = [
       'url' => $getFlashUrl,
       'httpMethod' => 'GET',
@@ -289,7 +289,7 @@ class kanlogin
       'container' => 'dmm'
     ];
     $apiToken = $getApiToken->post(
-      self::urls['make_request'], $getFlashData
+      $this->urls['make_request'], $getFlashData
     );
 
     if ($apiToken['status'] == 200) {
@@ -300,7 +300,7 @@ class kanlogin
           $this->loginData['api_token'] = $apiToken_data[$getFlashUrl]['body']['api_token'];
           $this->loginData['api_starttime'] = $apiToken_data[$getFlashUrl]['body']['api_starttime'];
           $this->loginData['flash_base'] = 'http://' . $this->loginData['world_ip'] . '/kcs/';
-          $this->loginData['flash'] = sprintf(self::urls['flash'], $this->loginData['world_ip'], $this->loginData['api_token'], $this->loginData['api_starttime']);
+          $this->loginData['flash'] = sprintf($this->urls['flash'], $this->loginData['world_ip'], $this->loginData['api_token'], $this->loginData['api_starttime']);
 
           $json->add('flash_base', $this->loginData['flash_base']);
           $json->add('flash', $this->loginData['flash']);
