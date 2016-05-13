@@ -30,7 +30,7 @@ angular.module('dmmLogin', ['angular-loading-bar'])
         email: !!init_data ? init_data.email : '',
         password: '',
         remember: false,
-        loadType: 'swf'
+        loadType: 'include'
       };
       $scope.hasCookie = !!$scope.login_data.email;
       $scope.error = '';
@@ -62,7 +62,7 @@ angular.module('dmmLogin', ['angular-loading-bar'])
                 $scope.error = json.msg;
               } else {
                 $scope.login_data.password = '';
-                if ($scope.login_data.loadType == 'swf') {
+                if ($scope.login_data.loadType == 'include') {
                   $scope.flashLink = $sce.trustAsResourceUrl(json.data.flash);
                   $scope.flashBase = $sce.trustAsResourceUrl(json.data.flash_base);
                   $scope.gameloaded = true;
