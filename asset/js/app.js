@@ -67,8 +67,10 @@ angular.module('dmmLogin', ['angular-loading-bar'])
                   $scope.flashBase = $sce.trustAsResourceUrl(json.data.flash_base);
                   $scope.gameloaded = true;
                 } else if ($scope.login_data.loadType == 'redirect') {
+                  $scope.redirectModalClass = true;
                   location.href = json.data.flash;
                 } else if ($scope.login_data.loadType == 'redirect2') {
+                  $scope.redirectModalClass = true;
                   location.href = json.data.link;
                 }
               }

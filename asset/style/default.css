@@ -46,3 +46,13 @@ body.bg {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.modal.redirect {
+  display: block;
+}
+
+.github-logo {
+  font-size: 28px;
+  display: inline-block;
+  vertical-align: bottom;
+}
