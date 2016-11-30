@@ -204,6 +204,11 @@ class kanlogin
       $html = new simple_html_dom();
       $html->load($gamePage['data']);
       $link = $html->find('iframe#game_frame', 0)->src;
+      if (!$link) {
+        $json->setMsg('get game page failure');
+
+        return false;
+      }
       $html->clear();
 
       $this->loginData['osapi'] = htmlspecialchars_decode($link);

@@ -37,84 +37,99 @@
   <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-  <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
-  <script src="//cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.js"></script>
-  <link href="//cdn.bootcss.com/angular-loading-bar/0.8.0/loading-bar.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
-  <link href="/asset/style/default.css" rel="stylesheet">
+  <script src="//cdn.bootcss.com/angular.js/1.5.8/angular.min.js"></script>
+  <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-animate.min.js"></script>
+  <script src="//cdn.bootcss.com/angular.js/1.5.8/angular-aria.min.js"></script>
+  <script src="//cdn.bootcss.com/angular-material/1.1.1/angular-material.min.js"></script>
+  <link href="//cdn.bootcss.com/angular-material/1.1.1/angular-material.min.css" rel="stylesheet">
+  <script src="//cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
+  <link href="//cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.min.css" rel="stylesheet">
 </head>
-<body class="noto bg"
-      ng-class="{'modal-open': !!redirectModalClass}">
 <input type="hidden" id="init-data" value="<?= $init_data ?>">
-<div class="container-fluid" role="main">
+<div layout="column" role="main" flex>
   <div id="flashWrap" ng-if="gameloaded">
     <embed id="externalswf" width="800" height="480"
            wmode="opaque" quality="high" bgcolor="#000000"
            allowscriptaccess="always" type="application/x-shockwave-flash" base="{{flashBase}}"
            class="center-block" embed-src="{{flashLink}}" src="{{flashLink}}"></embed>
-    <button class="relogin btn btn-primary center-block" ng-click="relogin()">re-login</button>
+    <div layout="row" layout-align="center">
+      <md-button class="md-raised md-accent" ng-click="relogin()">re-login</md-button>
+    </div>
   </div>
   <div class="login-form" ng-if="!gameloaded">
-    <h2>DMM Login
-      <a href="https://github.com/slime7/dmmlogin" title="view on Github">
-        <svg class="github-logo" height="28" viewBox="0 0 16 16" width="28">
-          <path
-            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59 0.4 0.07 0.55-0.17 0.55-0.38 0-0.19-0.01-0.82-0.01-1.49-2.01 0.37-2.53-0.49-2.69-0.94-0.09-0.23-0.48-0.94-0.82-1.13-0.28-0.15-0.68-0.52-0.01-0.53 0.63-0.01 1.08 0.58 1.23 0.82 0.72 1.21 1.87 0.87 2.33 0.66 0.07-0.52 0.28-0.87 0.51-1.07-1.78-0.2-3.64-0.89-3.64-3.95 0-0.87 0.31-1.59 0.82-2.15-0.08-0.2-0.36-1.02 0.08-2.12 0 0 0.67-0.21 2.2 0.82 0.64-0.18 1.32-0.27 2-0.27 0.68 0 1.36 0.09 2 0.27 1.53-1.04 2.2-0.82 2.2-0.82 0.44 1.1 0.16 1.92 0.08 2.12 0.51 0.56 0.82 1.27 0.82 2.15 0 3.07-1.87 3.75-3.65 3.95 0.29 0.25 0.54 0.73 0.54 1.48 0 1.07-0.01 1.93-0.01 2.2 0 0.21 0.15 0.46 0.55 0.38C13.71 14.53 16 11.53 16 8 16 3.58 12.42 0 8 0z"></path>
-        </svg>
-      </a>
-    </h2>
-    <div class="alert alert-danger" role="alert" ng-show="error">
-      <span ng-bind="error">AngularJS load failed.</span>
-    </div>
-    <input type="email" class="form-control" placeholder="DMM ID" ng-model="login_data.email">
-    <input type="password" class="form-control" placeholder="Password" ng-model="login_data.password">
-    <div class="checkbox">
-      <label>
-        <input type="checkbox" value="remember-me" ng-model="login_data.remember"> Remember me
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="loadType" value="include" ng-model="login_data.loadType">
-        include swf
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="loadType" value="redirect" ng-model="login_data.loadType">
-        redirect to swf
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="loadType" value="redirect2" ng-model="login_data.loadType">
-        redirect to osapi
-      </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block"
-            type="submit" ng-disabled="logining" ng-click="login()">
-      Sign in
-    </button>
-    <button class="btn btn-lg btn-success btn-block"
-            type="submit" ng-disabled="logining" ng-show="hasCookie"
-            ng-click="login(true)">
-      Use cookie
-    </button>
-  </div>
-</div>
-<div class="modals">
-  <div class="modal fade"
-       ng-class="{'redirect in': !!redirectModalClass}">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-body">
-          redirecting...
+    <div md-whiteframe="1" flex layout="column" layout-padding layout-align="stretch stretch">
+      <h2>
+        DMM Login
+        <md-button href="https://github.com/slime7/dmmlogin" title="view on Github" class="md-icon-button">
+          <md-icon
+            md-svg-src='data:image/svg+xml,<svg height="28" viewBox="0 0 16 16" width="28"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59 0.4 0.07 0.55-0.17 0.55-0.38 0-0.19-0.01-0.82-0.01-1.49-2.01 0.37-2.53-0.49-2.69-0.94-0.09-0.23-0.48-0.94-0.82-1.13-0.28-0.15-0.68-0.52-0.01-0.53 0.63-0.01 1.08 0.58 1.23 0.82 0.72 1.21 1.87 0.87 2.33 0.66 0.07-0.52 0.28-0.87 0.51-1.07-1.78-0.2-3.64-0.89-3.64-3.95 0-0.87 0.31-1.59 0.82-2.15-0.08-0.2-0.36-1.02 0.08-2.12 0 0 0.67-0.21 2.2 0.82 0.64-0.18 1.32-0.27 2-0.27 0.68 0 1.36 0.09 2 0.27 1.53-1.04 2.2-0.82 2.2-0.82 0.44 1.1 0.16 1.92 0.08 2.12 0.51 0.56 0.82 1.27 0.82 2.15 0 3.07-1.87 3.75-3.65 3.95 0.29 0.25 0.54 0.73 0.54 1.48 0 1.07-0.01 1.93-0.01 2.2 0 0.21 0.15 0.46 0.55 0.38C13.71 14.53 16 11.53 16 8 16 3.58 12.42 0 8 0z"></path></svg>'
+            aria-label="Github">
+          </md-icon>
+        </md-button>
+      </h2>
+      <md-content>
+        <md-input-container>
+          <label>DMM ID</label>
+          <input ng-model="login_data.email" type="email">
+        </md-input-container>
+        <md-input-container md-is-error="false">
+          <label>Password</label>
+          <input ng-model="login_data.password" type="password">
+        </md-input-container>
+        <md-switch ng-model="login_data.remember">
+          Remember me
+        </md-switch>
+        <md-radio-group ng-model="login_data.loadType">
+          <md-radio-button value="include" class="md-primary"> include swf</md-radio-button>
+          <md-radio-button value="redirect" class="md-primary"> redirect to swf</md-radio-button>
+          <md-radio-button value="redirect2" class="md-primary"> redirect to osapi</md-radio-button>
+        </md-radio-group>
+        <div layout="row">
+          <md-button ng-disabled="logining" ng-click="login()" class="md-raised md-primary">Sign in</md-button>
+          <md-button ng-disabled="logining" ng-show="hasCookie" ng-click="login(true)"
+                     class="md-raised md-accent">
+            Use cookie
+          </md-button>
         </div>
-      </div>
+      </md-content>
     </div>
   </div>
 </div>
+
+<script type="text/ng-template" id="panel.tmpl.html">
+  <div role="dialog" layout="column" layout-align="center center">
+    <md-content layout-margin layout-padding>
+      <div layout="colum" layout-align="space-around">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+      <p>redirecting to your game...</p>
+    </md-content>
+  </div>
+</script>
+<style>
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+
+  body.noto {
+    font-family: "Noto Sans", "Noto Sans CJK SC", "Microsoft YaHei", "微软雅黑", tahoma, arial, sans-serif;
+  }
+
+  body.bg {
+    background-color: #fafafa;
+  }
+
+  .login-form {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+  }
+
+  .md-errors-spacer {
+    display: none;
+  }
+</style>
 <script src="/asset/js/app.js"></script>
 </body>
 </html>
