@@ -47,7 +47,7 @@
 </head>
 <body class="noto bg">
 <input type="hidden" id="init-data" value="<?= $init_data ?>">
-<div layout="column" role="main" flex>
+<div layout="column" role="main" layout-align="start center" flex ng-cloak>
   <div id="flashWrap" ng-if="gameloaded">
     <embed id="externalswf" width="800" height="480"
            wmode="opaque" quality="high" bgcolor="#000000"
@@ -124,13 +124,12 @@
   .login-form {
     max-width: 330px;
     padding: 15px;
-    margin: 0 auto;
   }
 
   .md-errors-spacer {
     display: none;
   }
 </style>
-<script src="/asset/js/app.js"></script>
+<script src="/asset/js/app.js?v=1.0"></script>
 </body>
 </html>

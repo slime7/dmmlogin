@@ -24,8 +24,8 @@
     })
 
     .controller('mainCtrl', [
-      '$scope', '$http', '$sce', '$mdPanel',
-      function ($scope, $http, $sce, $mdPanel) {
+      '$scope', '$http', '$sce', '$mdPanel', '$mdToast',
+      function ($scope, $http, $sce, $mdPanel, $mdToast) {
         var init_data = angular.fromJson(document.querySelector('#init-data').value);
         $scope.login_data = {
           email: !!init_data ? init_data.email : '',
@@ -34,7 +34,6 @@
           loadType: 'include'
         };
         $scope.hasCookie = !!$scope.login_data.email;
-        $scope.error = '';
         $scope.logining = false;
         $scope.flashLink = $sce.trustAsResourceUrl('');
         $scope.flashBase = $sce.trustAsResourceUrl('');
@@ -42,7 +41,6 @@
 
         $scope.login = function (cookie) {
           $scope.responseData = '';
-          $scope.error = '';
           $scope.logining = true;
           $scope.login_data.action = !!cookie ? 'usecookie' : 'login';
           var req = {
@@ -56,11 +54,11 @@
               $scope.responseData = response.data;
               $scope.logining = false;
               if (response.status !== 200) {
-                $scope.error = 'network error';
+                showError('network error');
               } else {
                 var json = response.data;
                 if (!json.success) {
-                  $scope.error = json.msg;
+                  showError(json.msg);
                 } else {
                   $scope.login_data.password = '';
                   if ($scope.login_data.loadType == 'include') {
@@ -79,7 +77,7 @@
             },
             function () {
               $scope.logining = false;
-              $scope.error = 'network error';
+              showError('network error');
             });
         };
 
@@ -108,7 +106,16 @@
             disableParentScroll: true
           };
           panel.open(config);
-        }
+        };
+
+        var showError = function (err) {
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(err)
+              .position('bottom left')
+              .hideDelay(3000)
+          );
+        };
       }]);
 })(angular)
 
