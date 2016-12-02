@@ -6,6 +6,14 @@
       cfpLoadingBarProvider.includeSpinner = false;
     }])
 
+    .config(function ($mdGestureProvider) {
+
+      // For mobile devices without jQuery loaded, do not
+      // intercept click events during the capture phase.
+      $mdGestureProvider.skipClickHijack();
+
+    })
+
     .directive('embedSrc', function () {
       return {
         restrict: 'A',
