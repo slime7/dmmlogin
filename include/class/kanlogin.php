@@ -36,9 +36,9 @@ class kanlogin
    * urls used
    */
   private $urls = [
-    'login' => 'https://www.dmm.com/my/-/login/',
-    'gettoken' => 'https://www.dmm.com/my/-/login/ajax-get-token/',
-    'auth' => 'https://www.dmm.com/my/-/login/auth/',
+    'login' => 'https://accounts.dmm.com/service/login/password/=/ref=main_top',
+    'gettoken' => 'https://accounts.dmm.com/service/api/get-token',
+    'auth' => 'https://accounts.dmm.com/service/login/password/authenticate',
     'game' => 'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/',
     'make_request' => 'http://osapi.dmm.com/gadgets/makeRequest',
     'get_world' => 'http://203.104.209.7/kcsapi/api_world/get_id/%s/1/%d',
@@ -99,18 +99,18 @@ class kanlogin
       $getLoginPage->setProxy(proxy_addr, proxy_port);
     }
     $loginPage = $getLoginPage->get($this->urls['login']);
-    preg_match('#DMM_TOKEN.*?"(?<DMM_TOKEN>[a-z0-9]{32})".*?"token.*?"(?<token>[a-z0-9]{32})#is', $loginPage['data'], $tokens);
+    preg_match('#csrf-token.*?"(?<csrf_token>[a-z0-9]{32})".*?"csrf-http-dmm-token.*?"(?<csrf_http_dmm_token>[a-z0-9]{32})#is', $loginPage['data'], $tokens);
     unset($loginPage['data']);
-    $DMM_TOKEN = isset($tokens['DMM_TOKEN']) ? $tokens['DMM_TOKEN'] : '';
-    $post_token = isset($tokens['token']) ? $tokens['token'] : '';
+    $csrf_token = isset($tokens['csrf_token']) ? $tokens['csrf_token'] : '';
+    $csrf_http_dmm_token = isset($tokens['csrf_http_dmm_token']) ? $tokens['csrf_http_dmm_token'] : '';
 
-    if ($loginPage['status'] == 200 && !!$DMM_TOKEN && !!$post_token) {
-      $this->loginData['DMM_TOKEN'] = $DMM_TOKEN;
-      $this->loginData['post_token'] = $post_token;
+    if (!!$csrf_token && !!$csrf_http_dmm_token) {
+      $this->loginData['csrf_token'] = $csrf_token;
+      $this->loginData['csrf_http_dmm_token'] = $csrf_http_dmm_token;
 
       return true;
     } else {
-      $json->setMsg('get DMM_TOKEN failure');
+      $json->setMsg('get CSRF-TOKEN failure');
 
       return false;
     }
@@ -127,13 +127,13 @@ class kanlogin
     if (proxy) {
       $getLoginTokens->setProxy(proxy_addr, proxy_port);
     }
-    $ajaxHeaders = ['DMM_TOKEN: ' . $this->loginData['DMM_TOKEN'], 'X-Requested-With: XMLHttpRequest'];
+    $ajaxHeaders = ['http-dmm-token: ' . $this->loginData['csrf_http_dmm_token'], 'X-Requested-With: XMLHttpRequest'];
     $tokensPage = $getLoginTokens->post(
-      $this->urls['gettoken'], ['token' => $this->loginData['post_token']], ['headers' => $ajaxHeaders]
+      $this->urls['gettoken'], ['token' => $this->loginData['csrf_token']], ['headers' => $ajaxHeaders]
     );
 
     if ($tokensPage['status'] == 200) {
-      $this->loginData['ajax_tokens'] = json_decode($tokensPage['data'], true);
+      $this->loginData['ajax_tokens'] = json_decode($tokensPage['data'], true)['body'];
 
       return true;
     } else {
@@ -159,9 +159,11 @@ class kanlogin
       'login_id' => $this->email,
       'save_login_id' => 0,
       'password' => $this->password,
-      'use_auto_login' => 0,
-      $this->loginData['ajax_tokens']['login_id'] => $this->email,
-      $this->loginData['ajax_tokens']['password'] => $this->password,
+      'save_password' => 0,
+      'idKey' => $this->email,
+      'pwKey' => $this->password,
+      'path' => '',
+      'prompt' => ''
     ];
     $loginResult = $doLogin->post(
       $this->urls['auth'], $loginParams
@@ -172,8 +174,12 @@ class kanlogin
       foreach ($loginResult['headers'] as $h) {
         $line = explode(':', $h, 2);
         if ($line[0] == 'Set-Cookie') {
-          $c = explode(';', $line[1])[0];
-          $this->loginData['dmm_cookie'] .= !!$this->loginData['dmm_cookie'] ? '; ' . $c : $c;
+          $c = trim(explode(';', $line[1])[0]);
+          if (explode('=', $c)[1] !== ''
+            && strpos($c, 'login_id2') === false && strpos($c, 'password') === false
+            && strpos($c, 'secid') === false && strpos($c, 'login_secure_id') === false) {
+            $this->loginData['dmm_cookie'] .= !!$this->loginData['dmm_cookie'] ? '; ' . $c : $c;
+          }
         }
       }
 
@@ -334,13 +340,28 @@ class kanlogin
    */
   public function login() {
     $is_get_flash = ($this->type != 'redirect2');
-    $get_osapi = $this->get_dmm_token()
-      && $this->get_login_token()
-      && $this->login_dmm()
-      && $this->get_osapi_link();
+    $get_osapi = true;
+    if (!$this->get_dmm_token()) {
+      return false;
+    }
+    if (!$this->get_login_token()) {
+      return false;
+    }
+    if (!$this->login_dmm()) {
+      return false;
+    }
+    if (!$this->get_osapi_link()) {
+      return false;
+    }
 
     if ($is_get_flash) {
-      $get_flash = $this->get_game_world() && $this->get_game_swf_link();
+      $get_flash = true;
+      if (!$this->get_game_world()) {
+        return false;
+      }
+      if (!$this->get_game_swf_link()) {
+        return false;
+      }
 
       return $get_osapi && $get_flash;
     } else {
