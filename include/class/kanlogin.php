@@ -173,7 +173,7 @@ class kanlogin
       $this->loginData['dmm_cookie'] = '';
       foreach ($loginResult['headers'] as $h) {
         $line = explode(':', $h, 2);
-        if ($line[0] == 'Set-Cookie') {
+        if (strtolower($line[0]) == 'set-cookie') {
           $c = trim(explode(';', $line[1])[0]);
           if (explode('=', $c)[1] !== ''
             && strpos($c, 'login_id2') === false && strpos($c, 'password') === false
