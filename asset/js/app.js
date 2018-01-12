@@ -97,12 +97,8 @@
 
         var showRedirecting = function () {
           var panel = $mdPanel;
-          var position = panel.newPanelPosition().center();
-          var ani = panel.newPanelAnimation()
-            .openFrom({top: '50%', left: '50%'})
-            .withAnimation(panel.animation.SCALE);
+          var position = panel.newPanelPosition().absolute().center();
           var config = {
-            animation: ani,
             attachTo: angular.element(document.body),
             templateUrl: 'panel.tmpl.html',
             position: position,
