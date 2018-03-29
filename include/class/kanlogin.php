@@ -96,7 +96,7 @@ class kanlogin
     global $json;
     $getLoginPage = new scurl();
     if (proxy) {
-      $getLoginPage->setProxy(proxy_addr, proxy_port);
+      $getLoginPage->setProxy(proxy, proxy_port);
     }
     $loginPage = $getLoginPage->get($this->urls['login']);
     preg_match('#csrf-token.*?"(?<csrf_token>[a-z0-9]{32})".*?"csrf-http-dmm-token.*?"(?<csrf_http_dmm_token>[a-z0-9]{32})#is', $loginPage['data'], $tokens);
@@ -125,7 +125,7 @@ class kanlogin
     global $json;
     $getLoginTokens = new scurl();
     if (proxy) {
-      $getLoginTokens->setProxy(proxy_addr, proxy_port);
+      $getLoginTokens->setProxy(proxy, proxy_port);
     }
     $ajaxHeaders = ['http-dmm-token: ' . $this->loginData['csrf_http_dmm_token'], 'X-Requested-With: XMLHttpRequest'];
     $tokensPage = $getLoginTokens->post(
@@ -152,7 +152,7 @@ class kanlogin
     global $json;
     $doLogin = new scurl();
     if (proxy) {
-      $doLogin->setProxy(proxy_addr, proxy_port);
+      $doLogin->setProxy(proxy, proxy_port);
     }
     $loginParams = [
       'token' => $this->loginData['ajax_tokens']['token'],
@@ -200,7 +200,7 @@ class kanlogin
     global $json;
     $getGamePage = new scurl();
     if (proxy) {
-      $getGamePage->setProxy(proxy_addr, proxy_port);
+      $getGamePage->setProxy(proxy, proxy_port);
     }
     $gamePage = $getGamePage->get(
       $this->urls['game'], [], ['cookie' => $this->loginData['dmm_cookie']]
@@ -246,7 +246,7 @@ class kanlogin
     global $json;
     $getWorld = new scurl();
     if (proxy) {
-      $getWorld->setProxy(proxy_addr, proxy_port);
+      $getWorld->setProxy(proxy, proxy_port);
     }
     parse_str(parse_url($this->loginData['osapi'], PHP_URL_QUERY), $this->loginData['osapi_query']);
     $getWorldUrl = sprintf($this->urls['get_world'], $this->loginData['osapi_query']['owner'], time() * 1000);
@@ -283,7 +283,7 @@ class kanlogin
     global $json;
     $getApiToken = new scurl();
     if (proxy) {
-      $getApiToken->setProxy(proxy_addr, proxy_port);
+      $getApiToken->setProxy(proxy, proxy_port);
     }
     $getFlashUrl = sprintf($this->urls['get_flash'], $this->loginData['world_ip'], $this->loginData['osapi_query']['owner'], time() * 1000);
     $getFlashData = [

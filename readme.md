@@ -18,6 +18,15 @@ swf获取流程来自[ooi3](https://github.com/acgx/ooi3)
 
 复制根目录的```proxy.sample.php```并重命名为```poxy.php```，修改文件内定义的ip和端口即可。
 
+###通过docker运行
+
+在项目根目录执行。由于是运行在docker容器内，所以proxy会无法代理到本地的代理。
+```
+docker build -t local/dmmlogin .
+docker run -d -p <PORT>:80 --name dmmlogin local/dmmlogin
+```
+PORT为外网端口。
+
 ###预览图
 
 ![preview](https://raw.githubusercontent.com/slime7/dmmlogin/master/asset/img/preview.png)
