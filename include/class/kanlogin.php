@@ -43,7 +43,8 @@ class kanlogin
     'make_request' => 'http://osapi.dmm.com/gadgets/makeRequest',
     'get_world' => 'http://203.104.209.7/kcsapi/api_world/get_id/%s/1/%d',
     'get_flash' => 'http://%s/kcsapi/api_auth_member/dmmlogin/%s/1/%d',
-    'flash' => 'http://%s/kcs/mainD2.swf?api_token=%s&api_starttime=%d'
+    'flash' => 'http://%s/kcs/mainD2.swf?api_token=%s&api_starttime=%d',
+    'html5' => 'http://%s/kcs2/index.php?api_root=/kcsapi&voice_root=/kcs/sound&osapi_root=osapi.dmm.com&version=4.0.0.7&api_token=%s&api_starttime=%d',
   ];
   /**
    * kan_colle world server ip
@@ -311,7 +312,7 @@ class kanlogin
           $this->loginData['api_token'] = $apiToken_data[$getFlashUrl]['body']['api_token'];
           $this->loginData['api_starttime'] = $apiToken_data[$getFlashUrl]['body']['api_starttime'];
           $this->loginData['flash_base'] = 'http://' . $this->loginData['world_ip'] . '/kcs/';
-          $this->loginData['flash'] = sprintf($this->urls['flash'], $this->loginData['world_ip'], $this->loginData['api_token'], $this->loginData['api_starttime']);
+          $this->loginData['flash'] = sprintf($this->urls['html5'], $this->loginData['world_ip'], $this->loginData['api_token'], $this->loginData['api_starttime']);
 
           $json->add('flash_base', $this->loginData['flash_base']);
           $json->add('flash', $this->loginData['flash']);

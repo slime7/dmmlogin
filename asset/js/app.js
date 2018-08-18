@@ -39,7 +39,7 @@
           email: !!init_data ? init_data.email : '',
           password: '',
           remember: false,
-          loadType: 'include'
+          loadType: 'redirect'
         };
         $scope.hasCookie = !!$scope.login_data.email;
         $scope.logining = false;
