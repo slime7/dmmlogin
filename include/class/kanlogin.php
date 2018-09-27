@@ -44,33 +44,17 @@ class kanlogin
     'get_world' => 'http://203.104.209.7/kcsapi/api_world/get_id/%s/1/%d',
     'get_flash' => 'http://%s/kcsapi/api_auth_member/dmmlogin/%s/1/%d',
     'flash' => 'http://%s/kcs/mainD2.swf?api_token=%s&api_starttime=%d',
-    'html5' => 'http://%s/kcs2/index.php?api_root=/kcsapi&voice_root=/kcs/sound&osapi_root=osapi.dmm.com&version=4.0.0.7&api_token=%s&api_starttime=%d',
+    'html5' => 'http://%s/kcs2/index.php?api_root=/kcsapi&voice_root=/kcs/sound&osapi_root=osapi.dmm.com&version=%s&api_token=%s&api_starttime=%d',
   ];
   /**
    * kan_colle world server ip
    */
-  private $world_ip_list = [
-    '203.104.209.71',
-    '203.104.209.87',
-    '125.6.184.16',
-    '125.6.187.205',
-    '125.6.187.229',
-    '203.104.209.134',
-    '203.104.209.167',
-    '203.104.248.135',
-    '125.6.189.7',
-    '125.6.189.39',
-    '125.6.189.71',
-    '125.6.189.103',
-    '125.6.189.135',
-    '125.6.189.167',
-    '125.6.189.215',
-    '125.6.189.247',
-    '203.104.209.23',
-    '203.104.209.39',
-    '203.104.209.55',
-    '203.104.209.102'
-  ];
+  private $world_ip_list = [];
+
+  /**
+   * script version
+   */
+  private $scriptversion = '4.0.0.0';
 
   /**
    * kanlogin constructor.
@@ -86,6 +70,44 @@ class kanlogin
     $this->password = $password;
     $this->type = $type;
     $this->remember = $remember;
+  }
+
+  /**
+   * get kcs_const.js
+   *
+   * @return bool
+   */
+  private function get_kcs_const() {
+    global $json;
+    $kcsConstJs = file_get_contents('http://203.104.209.7/gadget_html5/js/kcs_const.js');
+    if ($kcsConstJs) {
+      // get world ip
+      $world_match = null;
+      $world_match_preg = preg_match_all('#ConstServerInfo\.World_.*"http://(.*)/";#', $kcsConstJs, $world_match);
+      if ($world_match_preg) {
+        $this->world_ip_list = $world_match[1];
+      } else {
+        $json->setMsg('get world ip failure');
+
+        return false;
+      }
+
+      // get version info
+      $version_match = null;
+      $version_match_preg = preg_match('#VersionInfo\.scriptVesion.*"(.*)";#', $kcsConstJs, $version_match);
+      if ($version_match_preg) {
+        $this->scriptversion = $version_match[1];
+      } else {
+        $json->setMsg('get version info failure');
+
+        return false;
+      }
+      return true;
+    } else {
+      $json->setMsg('get kcs_const.js failure');
+
+      return false;
+    }
   }
 
   /**
@@ -312,7 +334,7 @@ class kanlogin
           $this->loginData['api_token'] = $apiToken_data[$getFlashUrl]['body']['api_token'];
           $this->loginData['api_starttime'] = $apiToken_data[$getFlashUrl]['body']['api_starttime'];
           $this->loginData['flash_base'] = 'http://' . $this->loginData['world_ip'] . '/kcs/';
-          $this->loginData['flash'] = sprintf($this->urls['html5'], $this->loginData['world_ip'], $this->loginData['api_token'], $this->loginData['api_starttime']);
+          $this->loginData['flash'] = sprintf($this->urls['html5'], $this->loginData['world_ip'], $this->scriptversion, $this->loginData['api_token'], $this->loginData['api_starttime']);
 
           $json->add('flash_base', $this->loginData['flash_base']);
           $json->add('flash', $this->loginData['flash']);
@@ -342,6 +364,9 @@ class kanlogin
   public function login() {
     $is_get_flash = ($this->type != 'redirect2');
     $get_osapi = true;
+    if (!$this->get_kcs_const()) {
+      return false;
+    }
     if (!$this->get_dmm_token()) {
       return false;
     }

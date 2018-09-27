@@ -16,7 +16,7 @@ swf获取流程来自[ooi3](https://github.com/acgx/ooi3)
 
 ###使用代理
 
-复制根目录的```proxy.sample.php```并重命名为```poxy.php```，修改文件内定义的ip和端口即可。
+复制根目录的```proxy.sample.php```并重命名为```proxy.php```，修改文件内定义的ip和端口即可。
 
 ###通过docker运行
 
