@@ -230,15 +230,13 @@ class kanlogin
     );
 
     if ($gamePage['status'] == 200) {
-      $html = new simple_html_dom();
-      $html->load($gamePage['data']);
-      $link = $html->find('iframe#game_frame', 0)->src;
+      preg_match('#"(http://osapi.dmm.com\/gadgets\/ifr.*?)",#is', $gamePage['data'], $osapi);
+      $link = isset($osapi) ? $osapi[1] : null;
       if (!$link) {
-        $json->setMsg('get game page failure');
+        $json->setMsg('get game frame failure');
 
         return false;
       }
-      $html->clear();
 
       $this->loginData['osapi'] = htmlspecialchars_decode($link);
       $json->add('link', $this->loginData['osapi']);
